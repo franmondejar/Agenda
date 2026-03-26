@@ -12,66 +12,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Flash PRO - Francisco Mondéjar</title>
+    <title>Agenda Flash - Francisco Mondéjar</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #e0e0e0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; color: #333; }
         
-        .header-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; margin-top: 10px; }
-        .logo-img { width: 75px; height: 75px; border-radius: 15px; object-fit: cover; border: 2px solid #1a73e8; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h1 { margin: 10px 0 0 0; font-size: 1.5rem; color: #333; }
+        .header-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+        .logo-img { width: 70px; height: 70px; border-radius: 15px; margin-bottom: 5px; }
+        h1 { font-size: 1.4rem; margin: 0; color: #333; }
 
-        .btn-activar { background: #ff9800; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 0.9rem; margin-bottom: 20px; cursor: pointer; font-weight: bold; width: 100%; max-width: 400px; box-shadow: 0 4px 12px rgba(255,152,0,0.4); }
-
-        .card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin-bottom: 20px; box-sizing: border-box; }
-        h2 { margin: 0 0 15px 0; color: #1a73e8; font-size: 1.2rem; text-align: center; }
+        .card { background: #eeeeee; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 400px; margin-bottom: 20px; box-sizing: border-box; text-align: center; }
+        h2 { color: #1a73e8; font-size: 1.1rem; margin-top: 0; display: flex; justify-content: center; align-items: center; gap: 8px; }
         
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; outline: none; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ccc; box-sizing: border-box; font-size: 15px; outline: none; }
 
-        .flash-container { display: flex; gap: 8px; margin: 10px 0; overflow-x: auto; padding-bottom: 5px; }
-        .btn-flash { background: #e8f0fe; color: #1967d2; border: 1px solid #d2e3fc; padding: 8px 15px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
+        .flash-container { display: flex; justify-content: center; gap: 8px; margin: 10px 0; }
+        .btn-flash { background: #d0d7de; color: #1a73e8; border: none; padding: 8px 15px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; }
 
-        .btn-principal { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+        .btn-principal { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 5px; }
 
         .contenedor-lista { width: 100%; max-width: 400px; }
-        .controles-lista { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 5px; font-size: 0.9rem; color: #666; }
-
-        .item-aviso { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid #1a73e8; }
-        .item-aviso.pasado { border-left-color: #d93025; background: #fff8f8; }
+        .bloque-busqueda { display: flex; gap: 8px; margin-bottom: 10px; }
+        .busqueda-txt { background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23add8e6" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 10px center; padding-left: 35px !important; }
         
-        .contador { display: block; font-size: 0.85rem; color: #d93025; font-weight: bold; margin-top: 5px; }
+        .controles-lista { background: #d9d9d9; padding: 10px 15px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .btn-borrar { color: #d93025; font-weight: bold; cursor: pointer; border: none; background: none; font-size: 0.85rem; }
 
-        footer { margin-top: auto; padding: 20px; text-align: center; font-size: 0.8rem; color: #666; border-top: 1px solid #ddd; width: 100%; max-width: 400px; }
-        .cc-icons { margin-top: 8px; display: flex; justify-content: center; gap: 5px; opacity: 0.7; }
-        .cc-icons img { height: 20px; }
+        .item-aviso { background: #e6e6e6; padding: 15px; margin-bottom: 2px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #ccc; border-left: 5px solid #1a73e8; }
+        .item-aviso:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
+        .item-aviso.pasado { border-left-color: #d93025; background: #fff0f0; }
+
+        .item-info { flex: 1; text-align: right; }
+        .item-info strong { font-size: 1rem; display: block; color: #000; }
+        .item-info small { color: #666; font-size: 0.85rem; font-weight: bold; }
+        
+        .chk-box { width: 18px; height: 18px; }
+
+        footer { margin-top: auto; padding: 20px; text-align: center; font-size: 0.75rem; color: #666; width: 100%; max-width: 400px; }
+        .cc-icons { margin-top: 5px; display: flex; justify-content: center; gap: 5px; opacity: 0.6; }
+        .cc-icons img { height: 18px; }
     </style>
 </head>
 <body>
 
     <div class="header-logo">
-        <img src="img/logo.png" alt="Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3652/3652191.png'">
+        <img src="img/Logo.png" alt="Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3652/3652191.png'">
         <h1>Agenda Flash</h1>
     </div>
 
-    <button class="btn-activar" onclick="permitirAlertas()">🔔 ACTIVAR ALERTAS SONORAS</button>
-
     <div class="card">
         <h2>🚀 Nuevo Recordatorio</h2>
-        <input type="text" id="titulo" placeholder="¿Qué hay que hacer?">
+        <input type="text" id="titulo" placeholder="¿Qué vas a hacer?">
         
         <div class="flash-container">
             <div class="btn-flash" onclick="setFlash(1)">+1 Día</div>
-            <div class="btn-flash" onclick="setFlash(7)">+7 Días</div>
-            <div class="btn-flash" onclick="setFlash(30)">+30 Días</div>
+            <div class="btn-flash" onclick="setFlash(7)">+1 Semana</div>
+            <div class="btn-flash" onclick="setFlash(30)">+1 Mes</div>
         </div>
 
         <input type="datetime-local" id="fecha">
-        <button class="btn-principal" onclick="crearAlarma()">PROGRAMAR AHORA</button>
+        <button class="btn-principal" onclick="crearAlarma()">Añadir a la Agenda</button>
     </div>
 
     <div class="contenedor-lista">
+        <div class="bloque-busqueda">
+            <input type="text" id="busquedaTexto" class="busqueda-txt" placeholder="Buscar por nombre..." onkeyup="render()">
+            <input type="date" id="busquedaFecha" onchange="render()" style="flex: 0.6; padding: 8px;">
+        </div>
+
         <div class="controles-lista">
-            <label><input type="checkbox" onclick="seleccionarTodo(this.checked)"> Todos</label>
-            <span style="cursor:pointer; color:#d93025; font-weight:bold;" onclick="borrarSeleccionados()">Borrar selección</span>
+            <label style="display:flex; align-items:center; gap:5px;"><input type="checkbox" id="checkTodos" onclick="seleccionarTodo(this.checked)"> Todos</label>
+            <button class="btn-borrar" onclick="borrarSeleccionados()">Borrar</button>
         </div>
         <div id="listaItems"></div>
     </div>
@@ -81,31 +92,16 @@
         <p>Este software está bajo licencia:</p>
         <strong>Creative Commons BY-NC-SA 4.0</strong>
         <div class="cc-icons">
-            <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
-            <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY">
-            <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC">
-            <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA">
+            <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC"> <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY"> <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC"> <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA">
         </div>
-        <p style="margin-top:10px; font-size: 0.7rem;">Atribución - No Comercial - Compartir Igual</p>
+        <p style="margin-top:5px;">Atribución - No Comercial - Compartir Igual</p>
     </footer>
 
     <script>
         let avisos = JSON.parse(localStorage.getItem('agenda_v_final_fm')) || [];
 
-        function permitirAlertas() {
-            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
-            audio.play().then(() => {
-                if ("Notification" in window) {
-                    Notification.requestPermission().then(res => {
-                        alert("✅ Sonido y avisos activados correctamente.");
-                    });
-                }
-            }).catch(() => alert("Error: Pulsa de nuevo el botón naranja."));
-        }
-
         function setFlash(d) {
-            const f = new Date();
-            f.setDate(f.getDate() + d);
+            const f = new Date(); f.setDate(f.getDate() + d);
             const offset = f.getTimezoneOffset() * 60000;
             document.getElementById('fecha').value = new Date(f - offset).toISOString().slice(0, 16);
         }
@@ -114,7 +110,7 @@
             const t = document.getElementById('titulo').value;
             const d = document.getElementById('fecha').value;
             if(!t || !d) return alert("Rellena título y fecha");
-            avisos.push({ id: Date.now(), titulo: t, fecha: d, sonado: false });
+            avisos.push({ id: Date.now(), titulo: t, fecha: d });
             guardarYRender();
             document.getElementById('titulo').value = "";
         }
@@ -125,61 +121,30 @@
         }
 
         function render() {
-            const lista = document.getElementById('listaItems');
-            lista.innerHTML = "";
-            avisos.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
-            avisos.forEach(a => {
+            const listaUI = document.getElementById('listaItems');
+            const bTexto = document.getElementById('busquedaTexto').value.toLowerCase();
+            const bFecha = document.getElementById('busquedaFecha').value;
+            listaUI.innerHTML = "";
+            
+            let filtrados = avisos.filter(a => a.titulo.toLowerCase().includes(bTexto));
+            if (bFecha) filtrados = filtrados.filter(a => a.fecha.split('T')[0] === bFecha);
+            
+            filtrados.sort((a,b) => new Date(a.fecha) - new Date(b.fecha));
+            
+            filtrados.forEach(a => {
                 const item = document.createElement('div');
-                item.className = "item-aviso" + (new Date(a.fecha) < new Date() ? " pasado" : "");
+                const esPasado = new Date(a.fecha) < new Date();
+                item.className = "item-aviso" + (esPasado ? " pasado" : "");
+                
                 item.innerHTML = `
-                    <input type="checkbox" class="chk" value="${a.id}">
-                    <div style="flex:1">
-                        <strong>${a.titulo}</strong><br>
-                        <small>${new Date(a.fecha).toLocaleString()}</small>
-                        <span class="contador" id="c-${a.id}">...</span>
+                    <input type="checkbox" class="chk chk-box" value="${a.id}" onclick="actualizarIU()">
+                    <div class="item-info">
+                        <strong>${a.titulo}</strong>
+                        <small>${new Date(a.fecha).toLocaleString([], {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})}</small>
                     </div>
                 `;
-                lista.appendChild(item);
+                listaUI.appendChild(item);
             });
-        }
-
-        setInterval(() => {
-            const ahora = new Date();
-            avisos.forEach(a => {
-                const fAviso = new Date(a.fecha);
-                const diff = fAviso - ahora;
-                const el = document.getElementById(`c-${a.id}`);
-                if (diff <= 0) {
-                    if (el) el.innerText = "¡TIEMPO CUMPLIDO!";
-                    if (!a.sonado) {
-                        a.sonado = true;
-                        ejecutarAlarma(a);
-                    }
-                } else if (el) {
-                    const s = Math.floor(diff / 1000);
-                    const m = Math.floor(s / 60);
-                    const h = Math.floor(m / 60);
-                    const d = Math.floor(h / 24);
-                    el.innerText = `Faltan: ${d}d ${h%24}h ${m%60}m ${s%60}s`;
-                }
-            });
-        }, 1000);
-
-        function ejecutarAlarma(a) {
-            // Sonido de sistema (beep largo)
-            const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-            audio.play().catch(() => console.log("Audio bloqueado"));
-
-            if(navigator.vibrate) navigator.vibrate([1000, 500, 1000]);
-
-            if (Notification.permission === "granted") {
-                new Notification("⏰ " + a.titulo);
-            }
-
-            setTimeout(() => {
-                alert("⏰ ALARMA: " + a.titulo);
-                guardarYRender();
-            }, 500);
         }
 
         function seleccionarTodo(v) {
@@ -188,10 +153,16 @@
 
         function borrarSeleccionados() {
             const ids = Array.from(document.querySelectorAll('.chk:checked')).map(c => parseInt(c.value));
-            if(ids.length > 0 && confirm("¿Eliminar avisos?")) {
+            if(ids.length > 0 && confirm("¿Eliminar seleccionados?")) {
                 avisos = avisos.filter(a => !ids.includes(a.id));
                 guardarYRender();
             }
+        }
+
+        function actualizarIU() {
+            const todos = document.querySelectorAll('.chk').length;
+            const seleccionados = document.querySelectorAll('.chk:checked').length;
+            document.getElementById('checkTodos').checked = (todos > 0 && todos === seleccionados);
         }
 
         window.onload = render;
