@@ -16,25 +16,24 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
-        /* Contenedor del Logo */
-        .header-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
-        .logo-img { width: 60px; height: 60px; margin-bottom: 10px; border-radius: 12px; }
+        .header-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
+        .logo-img { width: 60px; height: 60px; margin-bottom: 10px; border-radius: 12px; object-fit: cover; }
+
+        /* Botón de activación necesario para móviles */
+        .btn-activar-audio { background: #ff9800; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 20px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(255,152,0,0.3); }
 
         .card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin-bottom: 20px; }
-        h2 { margin: 0 0 15px 0; color: #1a73e8; font-size: 1.3rem; text-align: center; }
+        h2 { margin: 0 0 15px 0; color: #1a73e8; font-size: 1.2rem; text-align: center; }
         
         input[type="text"], input[type="datetime-local"] { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
 
-        /* Pestañas Flash */
         .flash-container { display: flex; gap: 8px; margin: 10px 0; overflow-x: auto; padding-bottom: 5px; }
         .btn-flash { background: #e8f0fe; color: #1967d2; border: 1px solid #d2e3fc; padding: 8px 15px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; cursor: pointer; font-weight: 500; }
 
-        .btn-principal { background: #1a73e8; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .btn-principal { background: #1a73e8; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 1rem; }
 
-        /* Buscador */
         .input-busqueda { width: 100%; max-width: 400px; padding: 10px; border-radius: 20px; border: 1px solid #ccc; margin-bottom: 10px; outline: none; padding-left: 15px; box-sizing: border-box; }
 
-        /* Lista y Checkboxes */
         .controles-lista { width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px; font-size: 0.9rem; }
         .btn-borrar-bulk { background: #d93025; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn-borrar-bulk:disabled { background: #e0e0e0; color: #999; }
@@ -47,7 +46,6 @@
         .contador { display: block; font-size: 0.75rem; color: #d93025; font-weight: bold; margin-top: 4px; }
         input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
 
-        /* Footer con Licencia */
         footer { margin-top: 30px; padding: 20px; text-align: center; font-size: 0.8rem; color: #666; border-top: 1px solid #ddd; width: 100%; max-width: 400px; }
         .cc-icons { margin-top: 8px; display: flex; justify-content: center; gap: 5px; opacity: 0.7; }
         .cc-icons img { height: 20px; }
@@ -56,9 +54,11 @@
 <body>
 
     <div class="header-logo">
-       <img src="img/logo.png" alt="Mi Logo Personal" class="logo-img">
-       <h1 style="margin:0; font-size: 1.5rem; color: #333;">Mi Agenda Flash</h1>
+        <img src="img/imagen.png" alt="Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3652/3652191.png'">
+        <h1 style="margin:0; font-size: 1.4rem; color: #333;">Agenda Flash</h1>
     </div>
+
+    <button class="btn-activar-audio" onclick="activarSonido()">🔔 Activar Alertas (Pulsa aquí)</button>
 
     <div class="card">
         <h2>🚀 Nuevo Recordatorio</h2>
@@ -86,8 +86,7 @@
     <div class="lista-pendientes" id="contenedorLista"></div>
 
     <footer>
-        <p>Diseñado y creado con ❤️ por Francisco Mondéjar</p>
-        <p>Este software está bajo licencia:</p>
+        <p>© 2026 - Mi Agenda Personal</p>
         <strong>Creative Commons BY-NC-SA 4.0</strong>
         <div class="cc-icons">
             <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC">
@@ -95,19 +94,30 @@
             <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC">
             <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA">
         </div>
-        <p style="margin-top:10px; font-size: 0.7rem;">Atribución - No Comercial - Compartir Igual</p>
     </footer>
 
     <script>
-        // Mantenemos toda la lógica JS de antes (setInterval, renderizarLista, etc.)
-        let recordatorios = JSON.parse(localStorage.getItem('agenda_ultra_final')) || [];
+        let recordatorios = JSON.parse(localStorage.getItem('agenda_final_v5')) || [];
+
+        // Función para que el móvil permita sonidos y notificaciones
+        function activarSonido() {
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+            audio.play().then(() => {
+                if ("Notification" in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            alert("✅ ¡Listo! Sonido y notificaciones activados.");
+                        } else {
+                            alert("✅ Sonido activado (pero las notificaciones están bloqueadas).");
+                        }
+                    });
+                }
+            }).catch(() => alert("Por favor, vuelve a pulsar para activar el audio."));
+        }
 
         setInterval(actualizarContadoresVisuales, 1000);
 
-        window.onload = () => {
-            if ("Notification" in window) Notification.requestPermission();
-            renderizarLista();
-        };
+        window.onload = () => { renderizarLista(); };
 
         function setFlash(dias) {
             const f = new Date();
@@ -119,10 +129,12 @@
         function crearAlarma() {
             const titulo = document.getElementById('titulo').value;
             const fecha = document.getElementById('fecha').value;
-            if (!titulo || !fecha) return;
+            if (!titulo || !fecha) return alert("Escribe un título y elige fecha");
+
             recordatorios.push({ id: Date.now(), titulo, fecha, completado: false });
             guardarYRenderizar();
             document.getElementById('titulo').value = "";
+            document.getElementById('fecha').value = "";
         }
 
         function renderizarLista() {
@@ -131,6 +143,7 @@
             listaUI.innerHTML = "";
             const filtrados = recordatorios.filter(a => a.titulo.toLowerCase().includes(busqueda));
             filtrados.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+            
             filtrados.forEach(aviso => {
                 const div = document.createElement('div');
                 div.className = `item-aviso`;
@@ -140,7 +153,7 @@
                     <div style="flex-grow:1">
                         <strong>${aviso.titulo}</strong>
                         <small>${new Date(aviso.fecha).toLocaleString()}</small>
-                        <span class="contador" id="timer-${aviso.id}">...</span>
+                        <span class="contador" id="timer-${aviso.id}">Calculando...</span>
                     </div>
                 `;
                 listaUI.appendChild(div);
@@ -156,10 +169,11 @@
                 if (!timerElement) return;
                 const fechaAviso = new Date(aviso.fecha).getTime();
                 const diff = fechaAviso - ahora;
+
                 if (diff <= 0) {
                     timerElement.innerText = "¡TIEMPO CUMPLIDO!";
                     timerElement.parentElement.parentElement.classList.add('pasado');
-                    if (!aviso.completado && diff > -2000) dispararAviso(aviso);
+                    if (!aviso.completado) dispararAviso(aviso);
                 } else {
                     const d = Math.floor(diff / (1000 * 60 * 60 * 24));
                     const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -168,6 +182,25 @@
                     timerElement.innerText = `Faltan: ${d}d ${h}h ${m}m ${s}s`;
                 }
             });
+        }
+
+        function dispararAviso(aviso) {
+            aviso.completado = true;
+            localStorage.setItem('agenda_final_v5', JSON.stringify(recordatorios));
+
+            // Sonido
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+            audio.play().catch(e => console.log("Audio bloqueado"));
+
+            // Vibración
+            if ("vibrate" in navigator) navigator.vibrate([500, 110, 500]);
+
+            // Notificación o Alert
+            if (Notification.permission === "granted") {
+                new Notification("⏰ " + aviso.titulo);
+            }
+            // El alert es lo que mejor funciona para "despertar" el móvil si está la app abierta
+            setTimeout(() => { alert("⏰ ALARMA: " + aviso.titulo); }, 100);
         }
 
         function seleccionarTodo(estado) {
@@ -193,15 +226,8 @@
         }
 
         function guardarYRenderizar() {
-            localStorage.setItem('agenda_ultra_final', JSON.stringify(recordatorios));
+            localStorage.setItem('agenda_final_v5', JSON.stringify(recordatorios));
             renderizarLista();
-        }
-
-        function dispararAviso(aviso) {
-            aviso.completado = true;
-            localStorage.setItem('agenda_ultra_final', JSON.stringify(recordatorios));
-            new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3').play();
-            if (Notification.permission === "granted") new Notification("⏰ " + aviso.titulo);
         }
     </script>
 </body>
